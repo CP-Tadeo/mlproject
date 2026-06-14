@@ -2,4 +2,8 @@ pandas
 numpy
 seaborn
 plotly
--e .
+matplotlib
+scikit-learn
+catboost
+xgboost
+#-e .
