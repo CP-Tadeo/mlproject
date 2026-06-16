@@ -11,6 +11,7 @@ from sklearn.pipeline import Pipeline
 
 from src.exception import CustomException
 from src.logger import logging
+from src.utils import save_object
 
 @dataclass
 class DataTransformationConfig:
@@ -34,7 +35,7 @@ class DataTransformation:
             cat_pipeline = Pipeline(steps=[
                 ("imputer", SimpleImputer(strategy='most_frequent')),
                 ("one_hot_encoder",OneHotEncoder()),
-                ("scaler",StandardScaler())
+                #("scaler",StandardScaler(with_mean=False)) #optional
             ])
 
 
