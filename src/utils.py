@@ -6,6 +6,8 @@ import pandas as pd
 from src.exception import CustomException
 from src.logger import logging
 
+from sklearn.model_selection import GridSearchCV
+
 import dill
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 
@@ -21,7 +23,7 @@ def save_object(file_path, obj):
         raise CustomException(e, sys)
     
 from sklearn.model_selection import train_test_split
-def evaluate_models(X_train, y_train, X_test, y_test, models):
+def evaluate_models(X_train, y_train, X_test, y_test, models, params):
     try:
         # X_train, X_test, y_train, y_test = train_test_split(
         #      X, y, test_size=0.2, random_state=1229
@@ -30,7 +32,13 @@ def evaluate_models(X_train, y_train, X_test, y_test, models):
 
         for i in range(len(list(models))):
              model = list(models.values())[i]
-             model.fit(X_train, y_train)
+             para=params[list(models.keys())[i]]
+             gs = GridSearchCV(model,para,cv=3)
+             gs.fit(X_train,y_train)
+             model.set_params(**gs.best_params_)
+             print(gs.best_params_)
+             model.fit(X_train,y_train)
+             #model.fit(X_train, y_train)
              y_train_pred = model.predict(X_train)
              y_test_pred = model.predict(X_test)
 
